@@ -98,6 +98,46 @@ function extractContent() {
         }
       }
     }
+    
+  } else if (currentUrl.includes('tuoitre.vn')) {
+    source = 'tuoitre';
+    // Selector cho Tuổi Trẻ
+    const titleSelectors = [
+      'h1.detail-title',
+      'h1.article-title',
+      '.detail-title',
+      '.article-title',
+      'h1[data-role="title"]',
+      'h1'
+    ];
+    
+    const descriptionSelectors = [
+      'h2.detail-sapo',
+      '.detail-sapo',
+      'h2[data-role="sapo"]',
+      '.sapo',
+      '.detail__sapo'
+    ];
+    
+    // Tìm tiêu đề
+    for (const selector of titleSelectors) {
+      const element = document.querySelector(selector);
+      if (element && element.textContent.trim()) {
+        title = element.textContent.trim();
+        console.log('Tuổi Trẻ - Tìm thấy tiêu đề với selector:', selector);
+        break;
+      }
+    }
+    
+    // Tìm mô tả
+    for (const selector of descriptionSelectors) {
+      const element = document.querySelector(selector);
+      if (element && element.textContent.trim()) {
+        description = element.textContent.trim();
+        console.log('Tuổi Trẻ - Tìm thấy mô tả với selector:', selector);
+        break;
+      }
+    }
   }
   
   console.log('Nguồn:', source);

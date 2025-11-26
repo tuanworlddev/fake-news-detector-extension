@@ -10,13 +10,15 @@
   "host_permissions": [
     "https://vnexpress.net/*",
     "https://tienphong.vn/*",
+    "https://tuoitre.vn/*",
     "https://fakenews.omnituan.online/*"
   ],
   "content_scripts": [
     {
       "matches": [
         "https://vnexpress.net/*",
-        "https://tienphong.vn/*"
+        "https://tienphong.vn/*",
+        "https://tuoitre.vn/*"
       ],
       "js": ["content.js"]
     }

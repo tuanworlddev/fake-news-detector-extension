@@ -51,10 +51,13 @@ document.addEventListener('DOMContentLoaded', function() {
   // Lấy nội dung trực tiếp từ tab hiện tại
   function getContentFromCurrentTab() {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      if (tabs[0] && (tabs[0].url.includes('vnexpress.net') || tabs[0].url.includes('tienphong.vn'))) {
-        console.log('Đang lấy nội dung từ tab hiện tại:', tabs[0].url);
+      const supportedDomains = ['vnexpress.net', 'tienphong.vn', 'tuoitre.vn'];
+      const currentTab = tabs[0];
+      
+      if (currentTab && supportedDomains.some(domain => currentTab.url.includes(domain))) {
+        console.log('Đang lấy nội dung từ tab hiện tại:', currentTab.url);
         
-        chrome.tabs.sendMessage(tabs[0].id, {action: "getContent"}, function(response) {
+        chrome.tabs.sendMessage(currentTab.id, {action: "getContent"}, function(response) {
           if (response && response.title) {
             // Hiển thị nội dung mới
             titleElement.textContent = response.title;
@@ -83,6 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Không thể lấy nội dung từ tab hiện tại');
           }
         });
+      } else {
+        console.log('Tab hiện tại không phải là trang báo được hỗ trợ');
       }
     });
   }
