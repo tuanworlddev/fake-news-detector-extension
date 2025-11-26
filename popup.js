@@ -15,20 +15,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Lấy nội dung từ storage
   function loadContent() {
-    chrome.storage.local.get(['vnexpressContent'], function(result) {
+    chrome.storage.local.get(['newsContent'], function(result) {
       console.log('Dữ liệu từ storage:', result);
       
-      if (result.vnexpressContent && result.vnexpressContent.title) {
+      if (result.newsContent && result.newsContent.title) {
         // Hiển thị nội dung
-        titleElement.textContent = result.vnexpressContent.title;
-        descriptionElement.textContent = result.vnexpressContent.description || 'Không có mô tả';
-        urlElement.textContent = result.vnexpressContent.url;
+        titleElement.textContent = result.newsContent.title;
+        descriptionElement.textContent = result.newsContent.description || 'Không có mô tả';
+        urlElement.textContent = result.newsContent.url;
+        
+        // Hiển thị nguồn nếu có
+        if (result.newsContent.source) {
+          const sourceBadge = document.createElement('div');
+          sourceBadge.style.cssText = 'font-size: 12px; color: #666; margin-bottom: 5px;';
+          sourceBadge.textContent = `Nguồn: ${result.newsContent.source.toUpperCase()}`;
+          urlElement.parentNode.insertBefore(sourceBadge, urlElement);
+        }
         
         noContentElement.style.display = 'none';
         articleContentElement.style.display = 'block';
         
         // Tự động phân tích khi có nội dung
-        analyzeContent(result.vnexpressContent.description || result.vnexpressContent.title);
+        analyzeContent(result.newsContent.description || result.newsContent.title);
       } else {
         // Không có nội dung
         noContentElement.style.display = 'block';
@@ -43,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Lấy nội dung trực tiếp từ tab hiện tại
   function getContentFromCurrentTab() {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      if (tabs[0] && tabs[0].url.includes('vnexpress.net')) {
+      if (tabs[0] && (tabs[0].url.includes('vnexpress.net') || tabs[0].url.includes('tienphong.vn'))) {
         console.log('Đang lấy nội dung từ tab hiện tại:', tabs[0].url);
         
         chrome.tabs.sendMessage(tabs[0].id, {action: "getContent"}, function(response) {
@@ -53,12 +61,20 @@ document.addEventListener('DOMContentLoaded', function() {
             descriptionElement.textContent = response.description || 'Không có mô tả';
             urlElement.textContent = response.url;
             
+            // Hiển thị nguồn nếu có
+            if (response.source) {
+              const sourceBadge = document.createElement('div');
+              sourceBadge.style.cssText = 'font-size: 12px; color: #666; margin-bottom: 5px;';
+              sourceBadge.textContent = `Nguồn: ${response.source.toUpperCase()}`;
+              urlElement.parentNode.insertBefore(sourceBadge, urlElement);
+            }
+            
             noContentElement.style.display = 'none';
             articleContentElement.style.display = 'block';
             
             // Lưu vào storage
             chrome.storage.local.set({
-              vnexpressContent: response
+              newsContent: response
             });
             
             // Phân tích nội dung

@@ -1,19 +1,23 @@
 {
   "manifest_version": 3,
-  "name": "VnExpress Fake News Detector",
+  "name": "Fake News Detector",
   "version": "1.0",
-  "description": "Phát hiện tin tức giả từ trang VnExpress",
+  "description": "Phát hiện tin tức giả từ các trang báo",
   "permissions": [
     "activeTab",
     "storage"
   ],
   "host_permissions": [
     "https://vnexpress.net/*",
+    "https://tienphong.vn/*",
     "https://fakenews.omnituan.online/*"
   ],
   "content_scripts": [
     {
-      "matches": ["https://vnexpress.net/*"],
+      "matches": [
+        "https://vnexpress.net/*",
+        "https://tienphong.vn/*"
+      ],
       "js": ["content.js"]
     }
   ],
