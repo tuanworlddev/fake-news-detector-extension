@@ -25,7 +25,12 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Fake News Detector"
+    "default_title": "Fake News Detector",
+    "default_icon": {
+      "16": "icons/fakenews16.png",
+      "48": "icons/fakenews48.png",
+      "128": "icons/fakenews128.png"
+    }
   },
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
