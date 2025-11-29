@@ -11,6 +11,7 @@
     "https://vnexpress.net/*",
     "https://tienphong.vn/*",
     "https://tuoitre.vn/*",
+    "https://kenh14.vn/*",
     "https://fakenews.omnituan.online/*"
   ],
   "content_scripts": [
@@ -18,7 +19,8 @@
       "matches": [
         "https://vnexpress.net/*",
         "https://tienphong.vn/*",
-        "https://tuoitre.vn/*"
+        "https://tuoitre.vn/*",
+        "https://kenh14.vn/*"
       ],
       "js": ["content.js"]
     }
